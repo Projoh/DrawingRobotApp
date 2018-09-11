@@ -25,15 +25,17 @@ class PointToRobotConverter (val screenHeight: Int, val screenWidth: Int) {
     private fun initialize() {
         output = ArrayList()
         output.add("SH\n")
+        output.add("PA 0,0,0;BG;AM;")
         placePenUp()
     }
 
     private fun endMovements() {
         output.add("PAC = -1000\n")
-        output.add("BGC;MCC\n")
+        output.add("BGC;AM\n")
         output.add("PA 0,0, -1000\n")
-        output.add("BG;MC\n")
-        output.add("MO")
+        output.add("BG;AM\n")
+        placePenUp();
+        output.add("MOAB;WT10;MOAB;END;\n")
 
         position = PolarCord(0f,0f)
     }
@@ -58,20 +60,22 @@ class PointToRobotConverter (val screenHeight: Int, val screenWidth: Int) {
 
         position = PolarCord(point.r, point.theta)
 
-        output.add("LM AB\n")
-        output.add("LI $tOffset, $rOffset\n")
-        output.add("LE;BGS;MC\n")
+        output.add("LM A\n")
+        output.add("LI ${tOffset.toInt()}\n")
+//        output.add("LM AB\n")
+//        output.add("LI $tOffset.toInt(), $rOffset.toInt()\n")
+        output.add("LE;BGS;AM\n")
         return true
     }
 
     private fun placePenDown() {
         output.add("PAC = 1000\n")
-        output.add("BGC;MCC\n")
+        output.add("BGC;AMC\n")
     }
 
     private fun placePenUp() {
         output.add("PAC = -1000\n")
-        output.add("BGC;MCC\n")
+        output.add("BGC;AMC\n")
     }
 
     fun drawPicture(imageToDraw: ImageToDraw) : String {
@@ -92,12 +96,13 @@ class PointToRobotConverter (val screenHeight: Int, val screenWidth: Int) {
 
     private fun drawLinesWithLI(lines: ArrayList<PolarCord>) {
         var errorFound = false;
-        output.add("LM AB\n")
+//        output.add("LM AB\n")
+        output.add("LM A\n")
         for(line in lines) {
             val rCount = line.r * R_TO_COUNT_CONVERSION
             val thetaCounts = line.theta * DEGREE_TO_COUNT_CONVERSION
-            val rOffset = rCount - motorB
-            val tOffset = thetaCounts - motorA
+            val rOffset = (rCount - motorB).toInt()
+            val tOffset = (thetaCounts - motorA).toInt()
 
             if     (motorB + rOffset > B_UPPER_BOUND || motorB + rOffset < B_LOWER_BOUND ||
                     motorA + tOffset > A_UPPER_BOUND || motorA + rOffset < A_LOWER_BOUND
@@ -108,12 +113,19 @@ class PointToRobotConverter (val screenHeight: Int, val screenWidth: Int) {
                 break
             }
 
-            motorA += tOffset.toInt()
-            motorB += rOffset.toInt()
+            if(rOffset == 0 && tOffset == 0)
+                continue
+
+            if(tOffset == 0)
+                continue
+
+            motorA += tOffset
+            motorB += rOffset
 
             position = PolarCord(line.r, line.theta)
 
-            output.add("LI $tOffset, $rOffset\n")
+//            output.add("LI $tOffset, $rOffset\n")
+            output.add("LI ${tOffset}\n")
         }
 
 
@@ -124,7 +136,10 @@ class PointToRobotConverter (val screenHeight: Int, val screenWidth: Int) {
         }
 
 
-        output.add("LE;BGS;MC\n")
+        output.add("LE;BGS;AM\n")
+//        output.add("PA $motorA, $motorB, 1000\n")
+        output.add("PA $motorA,, 1000\n")
+        output.add("BG;AM\n")
     }
 
 
