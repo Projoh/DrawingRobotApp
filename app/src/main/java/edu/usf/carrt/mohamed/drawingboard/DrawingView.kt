@@ -99,4 +99,15 @@ class DrawingView @JvmOverloads constructor(
         invalidate()
         return true
     }
+
+    fun resetDrawing() {
+        drawPath.reset()
+        canvasBitmap!!.eraseColor(Color.TRANSPARENT)
+        drawCanvas!!.drawBitmap(canvasBitmap, 0f, 0f, canvasPaint)
+        currentSegment = Segment()
+        imageToDraw = ImageToDraw()
+
+
+        invalidate()
+    }
 }
