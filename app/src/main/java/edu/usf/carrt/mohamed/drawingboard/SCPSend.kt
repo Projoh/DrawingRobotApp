@@ -1,22 +1,18 @@
 package edu.usf.carrt.mohamed.drawingboard
 
-import android.os.AsyncTask
 import com.jcraft.jsch.ChannelExec
 import com.jcraft.jsch.JSch
-import com.jcraft.jsch.Session
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.util.*
 import kotlin.concurrent.thread
 
-class SCPSend  {
+class SCPSend {
 
     fun sendFile(username: String,
-                         password: String,
-                         hostname: String,
-                         file:File) {
+                 password: String,
+                 hostname: String,
+                 file: File) {
 
         thread(start = true) {
             val jsch = JSch()
@@ -32,7 +28,7 @@ class SCPSend  {
 
 
             // Create SSH Channel.
-            var command = "scp -p" +" -t "+file.name
+            var command = "scp -p" + " -t " + file.name
             val sshChannel = session!!.openChannel("exec") as ChannelExec
 
 
@@ -46,8 +42,8 @@ class SCPSend  {
 
 
             // Send modified ime
-            command = "T "+(file.lastModified()/1000)+" 0"
-            command += (" "+(file.lastModified()/1000)+" 0\n")
+            command = "T " + (file.lastModified() / 1000) + " 0"
+            command += (" " + (file.lastModified() / 1000) + " 0\n")
             outputStream.write(command.toByteArray())
             outputStream.flush()
 
@@ -62,22 +58,18 @@ class SCPSend  {
             // Send file contents
             val fis = FileInputStream(file)
             val buf = ByteArray(1024)
-            while(true){
-                val len = fis.read(buf,0,buf.size)
-                if(len <=0)
+            while (true) {
+                val len = fis.read(buf, 0, buf.size)
+                if (len <= 0)
                     break;
-                outputStream.write(buf,0,len)
+                outputStream.write(buf, 0, len)
             }
             fis.close()
             buf[0] = 0
-            outputStream.write(buf,0,1)
+            outputStream.write(buf, 0, 1)
             outputStream.flush()
 
             outputStream.close()
-
-
-
-
 
 
             // Sleep needed in order to wait long enough to get result back.

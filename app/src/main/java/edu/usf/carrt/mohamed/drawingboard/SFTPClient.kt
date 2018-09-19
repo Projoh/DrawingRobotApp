@@ -1,25 +1,12 @@
 package edu.usf.carrt.mohamed.drawingboard
 
-import android.content.Context
-import android.content.res.AssetManager
-import android.os.AsyncTask
-import android.util.Log
-
 import com.jcraft.jsch.Channel
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.JSch
-import com.jcraft.jsch.JSchException
 import com.jcraft.jsch.Session
-import com.jcraft.jsch.SftpException
-
-import net.schmizz.sshj.common.Base64
-
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import kotlin.concurrent.thread
 
 object SFTPClient {
@@ -27,7 +14,7 @@ object SFTPClient {
     @Throws(IOException::class)
     fun upload(file: File) {
         thread(start = true) {
-            try{
+            try {
                 val ftpHost = "192.168.4.1"
                 val ftpPort = 22
                 val ftpUserName = "pi"

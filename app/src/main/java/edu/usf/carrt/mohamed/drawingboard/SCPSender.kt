@@ -1,16 +1,15 @@
 package edu.usf.carrt.mohamed.drawingboard
 
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
-import org.apache.commons.vfs2.FileSystemOptions;
-import org.apache.commons.vfs2.Selectors;
-import org.apache.commons.vfs2.impl.StandardFileSystemManager;
-import org.apache.commons.vfs2.provider.sftp.SftpFileSystemConfigBuilder;
+import org.apache.commons.vfs2.FileSystemException
+import org.apache.commons.vfs2.FileSystemOptions
+import org.apache.commons.vfs2.Selectors
+import org.apache.commons.vfs2.impl.StandardFileSystemManager
+import org.apache.commons.vfs2.provider.sftp.SftpFileSystemConfigBuilder
 import java.io.File
 
 
 class SCPSender {
-    fun send(localFile : String) {
+    fun send(localFile: String) {
 //        val scp = Scp()
 //        val portSSH = 22
 //        val srvrSSH = "192.168.4.1"

@@ -1,24 +1,14 @@
 package edu.usf.carrt.mohamed.drawingboard
 
-import android.app.AppComponentFactory
-import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.ImageButton
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import edu.usf.carrt.mohamed.drawingboard.SFTPClient.upload
 import kotlinx.android.synthetic.main.activity_drawing.*
 import java.io.File
-import java.io.FileOutputStream
-import kotlin.concurrent.thread
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -30,7 +20,7 @@ class DrawingActivity : AppCompatActivity(), Drawer {
     }
 
     private val mHideHandler = Handler()
-    private var selectedButton : ImageButton ? = null
+    private var selectedButton: ImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +49,8 @@ class DrawingActivity : AppCompatActivity(), Drawer {
             val file = File(letDirectory, "commands.dmc")
             file.appendText(result);
 
-//            val scpSend = SCPSend()
-//            val connected = scpSend.sendFile("pi","carrt123","192.168.4.1", file)
             upload(file)
-           }
+        }
 
 
         delete_button.setOnClickListener {
@@ -75,10 +63,9 @@ class DrawingActivity : AppCompatActivity(), Drawer {
         }
 
 
-
     }
 
-    fun changeColor(view : View) {
+    fun changeColor(view: View) {
         var imagebutton = view as ImageButton
         selectedButton = imagebutton
         first_button.background = ColorDrawable(resources.getColor(R.color.amber_600))

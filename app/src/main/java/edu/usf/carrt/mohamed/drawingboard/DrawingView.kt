@@ -3,33 +3,32 @@ package edu.usf.carrt.mohamed.drawingboard
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.view.View
 import android.view.MotionEvent
-import android.widget.Button
-import kotlinx.android.synthetic.main.activity_drawing.view.*
+import android.view.View
 
 class DrawingView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var drawPath : Path = Path()
-    private var drawPaint : Paint = Paint()
-    private var canvasPaint : Paint? = null
+    private var drawPath: Path = Path()
+    private var drawPaint: Paint = Paint()
+    private var canvasPaint: Paint? = null
     private val paintColor = 0xFF660000
-    private var drawCanvas : Canvas? = null
-    private var canvasBitmap : Bitmap? = null
-    private var imageToDraw : ImageToDraw = ImageToDraw()
-    private var currentSegment : Segment = Segment()
-    private var converter : PointToRobotConverter? = null
-    private var drawer : Drawer? = null
+    private var drawCanvas: Canvas? = null
+    private var canvasBitmap: Bitmap? = null
+    private var imageToDraw: ImageToDraw = ImageToDraw()
+    private var currentSegment: Segment = Segment()
+    private var converter: PointToRobotConverter? = null
+    private var drawer: Drawer? = null
 
-    init{
+    init {
         setupDrawing()
     }
 
-    fun getResult () : String {
+    fun getResult(): String {
         return converter!!.drawPicture(imageToDraw)
     }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
 
@@ -56,13 +55,13 @@ class DrawingView @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        canvasBitmap = Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888)
+        canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         drawCanvas = Canvas(canvasBitmap)
     }
 
     override fun onDraw(canvas: Canvas?) {
 //        super.onDraw(canvas)
-        canvas!!.drawBitmap(canvasBitmap,0f,0f,canvasPaint)
+        canvas!!.drawBitmap(canvasBitmap, 0f, 0f, canvasPaint)
         canvas.drawPath(drawPath, drawPaint)
     }
 
@@ -70,7 +69,7 @@ class DrawingView @JvmOverloads constructor(
         super.onTouchEvent(event)
 
         var touchX = event!!.x
-        var touchY= event.y
+        var touchY = event.y
         fun endLine() {
 //            drawPath.reset()
             imageToDraw.segments.add(currentSegment)
@@ -90,8 +89,8 @@ class DrawingView @JvmOverloads constructor(
 
 
 
-        when(event.action) {
-            MotionEvent.ACTION_DOWN ->startLine()
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> startLine()
             MotionEvent.ACTION_MOVE -> drawLine()
             MotionEvent.ACTION_UP -> endLine()
             else -> return false
@@ -113,7 +112,7 @@ class DrawingView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun linkDrawer(drawer : Drawer) {
-        this.drawer  = drawer
+    fun linkDrawer(drawer: Drawer) {
+        this.drawer = drawer
     }
 }

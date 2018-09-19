@@ -1,5 +1,5 @@
 package edu.usf.carrt.mohamed.drawingboard
 
-import java.util.ArrayList
+import java.util.*
 
-class ImageToDraw(var segments : ArrayList<Segment> = ArrayList())
+class ImageToDraw(var segments: ArrayList<Segment> = ArrayList())
