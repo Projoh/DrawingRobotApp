@@ -2,7 +2,9 @@ package edu.usf.carrt.mohamed.drawingboard
 
 import android.app.AppComponentFactory
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -10,13 +12,23 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageButton
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import edu.usf.carrt.mohamed.drawingboard.SFTPClient.upload
 import kotlinx.android.synthetic.main.activity_drawing.*
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.concurrent.thread
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-class DrawingActivity : AppCompatActivity() {
+class DrawingActivity : AppCompatActivity(), Drawer {
+    override fun getCurrentPen(): Int {
+        return if (selectedButton!!.id == 2131165249) 1 else if (selectedButton!!.id == 2131165303) 2 else 3
+    }
+
     private val mHideHandler = Handler()
     private var selectedButton : ImageButton ? = null
 
@@ -33,16 +45,24 @@ class DrawingActivity : AppCompatActivity() {
         // while interacting with the UI.
 //        dummy_button.setOnTouchListener(mDelayHideTouchListener)
 
+        drawing_view.linkDrawer(this)
+
         send_image_button.setOnClickListener {
             val drawingView = drawing_view
 
             var result = drawingView.getResult()
 
-            val filename = "thefile.dmc"
-            baseContext.openFileOutput(filename, Context.MODE_PRIVATE).use {
-                it.write(result.toByteArray())
-            }
-        }
+            val path = baseContext.filesDir
+            val letDirectory = File(path, "LET")
+            letDirectory.mkdirs()
+
+            val file = File(letDirectory, "commands.dmc")
+            file.appendText(result);
+
+//            val scpSend = SCPSend()
+//            val connected = scpSend.sendFile("pi","carrt123","192.168.4.1", file)
+            upload(file)
+           }
 
 
         delete_button.setOnClickListener {

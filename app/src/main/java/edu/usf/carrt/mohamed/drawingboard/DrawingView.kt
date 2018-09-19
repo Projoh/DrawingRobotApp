@@ -21,7 +21,7 @@ class DrawingView @JvmOverloads constructor(
     private var imageToDraw : ImageToDraw = ImageToDraw()
     private var currentSegment : Segment = Segment()
     private var converter : PointToRobotConverter? = null
-
+    private var drawer : Drawer? = null
 
     init{
         setupDrawing()
@@ -75,6 +75,7 @@ class DrawingView @JvmOverloads constructor(
 //            drawPath.reset()
             imageToDraw.segments.add(currentSegment)
             currentSegment = Segment()
+            currentSegment.color = drawer!!.getCurrentPen()
         }
 
         fun drawLine() {
@@ -105,9 +106,14 @@ class DrawingView @JvmOverloads constructor(
         canvasBitmap!!.eraseColor(Color.TRANSPARENT)
         drawCanvas!!.drawBitmap(canvasBitmap, 0f, 0f, canvasPaint)
         currentSegment = Segment()
+        currentSegment.color = drawer!!.getCurrentPen()
         imageToDraw = ImageToDraw()
 
 
         invalidate()
+    }
+
+    fun linkDrawer(drawer : Drawer) {
+        this.drawer  = drawer
     }
 }
