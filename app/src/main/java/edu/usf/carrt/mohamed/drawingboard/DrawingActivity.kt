@@ -49,7 +49,7 @@ class DrawingActivity : AppCompatActivity(), Drawer {
             val file = File(letDirectory, "commands.dmc")
             file.appendText(result);
 
-            upload(file)
+            upload(baseContext, file)
         }
 
 

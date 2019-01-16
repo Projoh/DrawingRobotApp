@@ -1,5 +1,8 @@
 package edu.usf.carrt.mohamed.drawingboard
 
+import android.content.Context
+import android.os.Handler
+import android.widget.Toast
 import com.jcraft.jsch.Channel
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.JSch
@@ -8,11 +11,14 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 import kotlin.concurrent.thread
+import android.os.Looper
+
+
 
 object SFTPClient {
 
     @Throws(IOException::class)
-    fun upload(file: File) {
+    fun upload(context : Context, file: File) {
         thread(start = true) {
             try {
                 val ftpHost = "192.168.4.1"
@@ -21,12 +27,13 @@ object SFTPClient {
                 val ftpPassword = "carrt123"
                 var ftpRemoteDirectory = "/home/pi/yuh"
                 val fileToTransmit = file.absolutePath
-                println("Creating session.")
+                showMessage("Creating session.", context)
                 val jsch = JSch()
 
                 var session: Session? = null
                 var channel: Channel? = null
                 var c: ChannelSftp? = null
+
 
                 //
                 // Now connect and SFTP to the SFTP Server
@@ -34,36 +41,37 @@ object SFTPClient {
                 try {
                     // Create a session sending through our username and password
                     session = jsch.getSession(ftpUserName, ftpHost, ftpPort)
-                    println("Session created.")
+                    showMessage("Session created.", context)
                     session!!.setPassword(ftpPassword)
 
                     val config = java.util.Properties()
                     config["StrictHostKeyChecking"] = "no"
                     session.setConfig(config)
-                    println("Session connected before.")
+                    showMessage("Session connected before.", context)
                     session.connect()
-                    println("Session connected.")
+                    showMessage("Session connected.",context)
 
-                    println("OPEN SFTP CHANNEL")
+                    showMessage("OPEN SFTP CHANNEL", context)
                     //
                     // Open the SFTP channel
                     //
-                    println("Opening Channel.")
+                    showMessage("Opening Channel.", context)
                     channel = session.openChannel("sftp")
                     channel!!.connect()
                     c = channel as ChannelSftp?
-                    println("Now checing status")
+                    showMessage("Now checing status",context)
                 } catch (e: Exception) {
                     System.err.println("Unable to connect to FTP server." + e.toString())
+                    showMessage("Unable to connect to FTP server." + e.toString(),context)
                     throw e
                 }
 
                 //
                 // Change to the remote directory
                 //
-                println("Now performing operations")
+                showMessage("Now performing operations",context)
                 ftpRemoteDirectory = "/home/pi/RobotCommands/"
-                println("Changing to FTP remote dir: $ftpRemoteDirectory")
+                showMessage("Changing to FTP remote dir: $ftpRemoteDirectory",context)
                 c!!.cd(ftpRemoteDirectory)
 
                 //
@@ -76,6 +84,7 @@ object SFTPClient {
                 } catch (e: Exception) {
                     System.err
                             .println("Storing remote file failed." + e.toString())
+                    showMessage("Storing remote file failed." + e.toString(),context)
                     throw e
                 }
 
@@ -86,14 +95,24 @@ object SFTPClient {
                     c.quit()
                 } catch (exc: Exception) {
                     System.err.println("Unable to disconnect from FTPserver. " + exc.toString())
+                    showMessage("Unable to disconnect from FTPserver. " + exc.toString(),context)
                 }
 
             } catch (e: Exception) {
                 System.err.println("Error: " + e.toString())
+                showMessage("Error: " + e.toString(),context)
             }
         }
 
-        println("Process Complete.")
+        showMessage("Process Complete.",context)
 
+    }
+
+    fun showMessage(message: String, context: Context) {
+        val handler = Handler(Looper.getMainLooper())
+
+        handler.post(Runnable {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        })
     }
 }
