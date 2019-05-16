@@ -48,7 +48,7 @@
                     android:layout_marginEnd="20dp"
                     android:id="@+id/launch_camera"
                     android:background="@color/amber_600"
-                    app:srcCompat="@drawable/ic_launcher_background"
+                    app:srcCompat="@drawable/ic_camera_enhance"
                     android:onClick="changeColor"
                     android:layout_toRightOf="@id/first_button"/>
 
@@ -58,7 +58,7 @@
                     android:layout_marginEnd="20dp"
                     android:id="@+id/image_from_camera"
                     android:background="@color/amber_600"
-                    app:srcCompat="@drawable/ic_launcher_background"
+                    app:srcCompat="@drawable/ic_action_emo_basic"
                     android:onClick="changeColor"
                     android:layout_toRightOf="@id/launch_camera"/>
 

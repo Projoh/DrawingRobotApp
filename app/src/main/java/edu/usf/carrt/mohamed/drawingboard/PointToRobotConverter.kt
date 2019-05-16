@@ -97,6 +97,7 @@ class PointToRobotConverter(val screenHeight: Int, val screenWidth: Int) {
 
     private fun drawLinesWithLI(lines: ArrayList<PolarCord>) {
         output.add("LM AB\n")
+        var isPenDown = true;
         for (line in lines) {
             val rCount = line.r * R_TO_COUNT_CONVERSION
             val thetaCounts = line.theta * DEGREE_TO_COUNT_CONVERSION + (A_THETA_UPPER_BOUND/2)
@@ -105,10 +106,18 @@ class PointToRobotConverter(val screenHeight: Int, val screenWidth: Int) {
 
             if (motorB + rOffset > B_HORIZONATAL_UPPER_BOUND || motorB + rOffset < B_LOWER_BOUND) {
                 output.add("REM ERROR: CANT MOVE B:$motorB by adding offset:$rOffset\n")
+                if(isPenDown) {
+                    placePenUp()
+                    isPenDown = false;
+                }
                 continue
             }
             if(motorA + tOffset > A_THETA_UPPER_BOUND || motorA + tOffset < A_THETA_LOWER_BOUND) {
                 output.add("REM ERROR: CANT MOVE A:$motorA  by adding offset:$tOffset\n")
+                if(isPenDown) {
+                    placePenUp()
+                    isPenDown = false;
+                }
                 continue
             }
 
@@ -118,6 +127,10 @@ class PointToRobotConverter(val screenHeight: Int, val screenWidth: Int) {
             if (tOffset == 0)
                 continue
 
+            if(!isPenDown) {
+                placePenDown()
+                isPenDown = true;
+            }
             motorA += tOffset
             motorB += rOffset
 
