@@ -46,20 +46,40 @@
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="20dp"
-                    android:id="@+id/second_Button"
+                    android:id="@+id/launch_camera"
                     android:background="@color/amber_600"
-                    app:srcCompat="@drawable/ic_filter_2_white_48dp"
+                    app:srcCompat="@drawable/ic_launcher_background"
                     android:onClick="changeColor"
                     android:layout_toRightOf="@id/first_button"/>
 
                 <ImageButton
                     android:layout_width="70dp"
-                    android:id="@+id/third_button"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/second_Button"
+                    android:layout_marginEnd="20dp"
+                    android:id="@+id/image_from_camera"
                     android:background="@color/amber_600"
+                    app:srcCompat="@drawable/ic_launcher_background"
                     android:onClick="changeColor"
-                    app:srcCompat="@drawable/ic_filter_3_white_48dp"/>
+                    android:layout_toRightOf="@id/launch_camera"/>
+
+                <!--<ImageButton-->
+                    <!--android:layout_width="70dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginEnd="20dp"-->
+                    <!--android:id="@+id/second_Button"-->
+                    <!--android:background="@color/amber_600"-->
+                    <!--app:srcCompat="@drawable/ic_filter_2_white_48dp"-->
+                    <!--android:onClick="changeColor"-->
+                    <!--android:layout_toRightOf="@id/first_button"/>-->
+
+                <!--<ImageButton-->
+                    <!--android:layout_width="70dp"-->
+                    <!--android:id="@+id/third_button"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_toRightOf="@id/second_Button"-->
+                    <!--android:background="@color/amber_600"-->
+                    <!--android:onClick="changeColor"-->
+                    <!--app:srcCompat="@drawable/ic_filter_3_white_48dp"/>-->
 
             </RelativeLayout>
             <edu.usf.carrt.mohamed.drawingboard.DrawingView

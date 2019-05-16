@@ -54,4 +54,7 @@ dependencies {
     implementation files('libs/ant-commons-logging.jar')
     implementation files('libs/ant-jsch.jar')
     implementation files('libs/commons-vfs2-2.2.jar')
+    implementation project(':OpenCV')
+    implementation 'com.google.code.gson:gson:2.8.5'
+
 }

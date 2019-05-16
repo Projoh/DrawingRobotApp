@@ -1,4 +1,6 @@
 package edu.usf.carrt.mohamed.drawingboard
 
-class PolarCord(var r: Float, var theta: Float) {
+import java.io.Serializable
+
+class PolarCord(var r: Double, var theta: Double) : Serializable {
 }

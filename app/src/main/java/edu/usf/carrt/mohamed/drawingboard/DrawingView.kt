@@ -35,6 +35,9 @@ class DrawingView @JvmOverloads constructor(
 
         this.viewTreeObserver.addOnGlobalLayoutListener {
             converter = PointToRobotConverter(this.height, this.width)
+
+            var test = converter!!.convertToPolarBasedOffScreenSize(864.4f,-530f);
+            var sti = "hi";
         }
 
 
