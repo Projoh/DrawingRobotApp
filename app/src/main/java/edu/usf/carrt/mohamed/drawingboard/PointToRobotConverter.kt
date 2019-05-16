@@ -82,7 +82,9 @@ class PointToRobotConverter(val screenHeight: Int, val screenWidth: Int) {
 
 
         for (segment in imageToDraw.segments) {
-            moveToPoint(segment.lines[0])
+            var count = 0
+            while(count < segment.lines.size && !moveToPoint(segment.lines[count])) count++
+            if(count >= segment.lines.size) break;
             placePenDown()
             drawLinesWithLI(segment.lines)
             placePenUp()
